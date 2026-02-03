@@ -1,0 +1,24 @@
+# ROYAL GOLD DOORPRIZE 👑
+
+Aplikasi Doorprize dengan desain **Premium & Luxury 3D**.
+Tema: "Royal Casino" - Hitam Onyx & Emas.
+
+## CARA PENGGUNAAN
+1.  **Buka File**: Klik dua kali `index.html`.
+2.  **Input Data**:
+    - Ketik manual atau
+    - **Import Excel** (Drag & Drop file .xlsx).
+3.  **Setting Pemenang (Rigging)**:
+    - Masukkan daftar nomor pemenang di menu Setting.
+    - Sistem akan memprioritaskan antrian ini sebelum kembali ke mode acak.
+4.  **Spin**:
+    - Roda 3D akan berputar dengan fisika realistis.
+    - Nikmati animasi kemenangan dengan mascot "Vintage Gold".
+
+## FITUR PREMIUM
+- **3D Depth**: Tampilan antarmuka memiliki kedalaman dan respon sentuhan.
+- **Realistic Lighting**: Efek pencahayaan emas pada tombol dan roda.
+- **High DPI Support**: Tampilan roda tetap tajam di layar Retina/4K.
+- **Party Mode**: Mascot perayaan yang dinamis namun elegan.
+
+Selamat menikmati kemewahan undian Anda! 🏆✨

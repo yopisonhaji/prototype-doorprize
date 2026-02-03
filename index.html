@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ULTIMATE BLING DOORPRIZE</title>
+    <!-- Google Fonts for Extreme Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rubik+Glitch&family=Vampiro+One&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- External Libraries -->
+    <!-- SheetJS for Excel -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+
+<body>
+
+    <!-- Mascots / Decorations -->
+    <div class="mascot-container" id="mascot-layer">
+        <div class="mascot" style="top: 10%; left: 10%;">🤡</div>
+        <div class="mascot" style="top: 20%; right: 15%;">🐒</div>
+        <div class="mascot" style="bottom: 15%; left: 20%;">🦄</div>
+        <div class="mascot" style="bottom: 30%; right: 10%;">🦁</div>
+        <div class="mascot" style="top: 50%; left: 5%;">�</div>
+    </div>
+
+    <div class="background-animation"></div>
+    <div class="overlay-grid"></div>
+
+    <div class="app-container">
+        <!-- HEADER -->
+        <header class="neon-header">
+            <h1 class="glitch-text" data-text="MEGA DOORPRIZE">MEGA DOORPRIZE</h1>
+            <div class="sub-header">WINNER TAKES IT ALL</div>
+        </header>
+
+        <!-- MAIN MENU SCREEN -->
+        <section id="screen-menu" class="screen active">
+            <div class="menu-grid">
+                <button class="bling-btn" onclick="app.navTo('screen-input')">
+                    <span class="icon">✍️</span>
+                    <span class="text">INPUT MANUAL</span>
+                </button>
+                <button class="bling-btn" onclick="app.navTo('screen-import')">
+                    <span class="icon">📂</span>
+                    <span class="text">IMPORT EXCEL</span>
+                </button>
+                <button class="bling-btn" onclick="app.navTo('screen-list')">
+                    <span class="icon">📜</span>
+                    <span class="text">LIHAT DAFTAR</span>
+                </button>
+                <button class="bling-btn" onclick="app.navTo('screen-setting')">
+                    <span class="icon">⚙️</span>
+                    <span class="text">SETTING WINNER</span>
+                </button>
+                <button class="bling-btn big-play" onclick="app.navTo('screen-spin')">
+                    <span class="icon">🎰</span>
+                    <span class="text">MULAI SPIN</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- INPUT MANUAL SCREEN -->
+        <section id="screen-input" class="screen hidden">
+            <h2 class="section-title">INPUT PESERTA</h2>
+            <div class="glass-panel">
+                <form id="form-manual" onsubmit="app.handleManualSubmit(event)">
+                    <div class="input-group">
+                        <label>NAMA</label>
+                        <input type="text" id="input-name" placeholder="Masukkan Nama..." required>
+                    </div>
+                    <div class="input-group">
+                        <label>NOMOR UNDIAN</label>
+                        <input type="text" id="input-number" placeholder="Contoh: 001" required>
+                    </div>
+                    <button type="submit" class="action-btn">SIMPAN DATA</button>
+                </form>
+            </div>
+            <button class="back-btn" onclick="app.navTo('screen-menu')">KEMBALI KE MENU</button>
+        </section>
+
+        <!-- IMPORT EXCEL SCREEN -->
+        <section id="screen-import" class="screen hidden">
+            <h2 class="section-title">IMPORT DATA EXCEL</h2>
+            <div class="glass-panel">
+                <div class="drop-zone" id="drop-zone">
+                    <p>DRAG & DROP FILE HERE</p>
+                    <p>OR</p>
+                    <input type="file" id="file-excel" accept=".xlsx, .xls">
+                </div>
+                <div id="import-status" class="status-text">Ready to import...</div>
+            </div>
+            <button class="back-btn" onclick="app.navTo('screen-menu')">KEMBALI KE MENU</button>
+        </section>
+
+        <!-- LIST SCREEN -->
+        <section id="screen-list" class="screen hidden">
+            <h2 class="section-title">DAFTAR PESERTA</h2>
+            <div class="stats-panel" style="margin-bottom: 10px; color: var(--gold-mid);">
+                TOTAL: <span id="total-participants">0</span>
+            </div>
+
+            <!-- SCROLLABLE WRAPPER -->
+            <div class="glass-panel" style="flex:1; display:flex; flex-direction:column; overflow:hidden;">
+                <div class="table-scroll-container">
+                    <table id="participants-table">
+                        <thead>
+                            <tr>
+                                <th>NO</th>
+                                <th>NAMA</th>
+                                <th>NOMOR UNDIAN</th>
+                                <th>AKSI</th>
+                            </tr>
+                        </thead>
+                        <tbody id="participants-body">
+                            <!-- Data injected here -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination-controls" style="margin-top: 10px; flex-shrink:0;">
+                    <button onclick="app.prevPage()">&laquo;</button>
+                    <span id="page-indicator">Page 1</span>
+                    <button onclick="app.nextPage()">&raquo;</button>
+                </div>
+            </div>
+
+            <div class="danger-zone" style="margin-top: 10px;">
+                <button class="danger-btn" onclick="app.clearAllData()">HAPUS SEMUA DATA</button>
+            </div>
+
+            <button class="back-btn" onclick="app.navTo('screen-menu')">KEMBALI KE MENU</button>
+        </section>
+
+        <!-- SETTING SCREEN -->
+        <section id="screen-setting" class="screen hidden">
+            <h2 class="section-title">SETTING PEMENANG</h2>
+            <div class="glass-panel">
+                <p class="instruction" style="color: var(--gold-mid); margin-bottom:10px;">
+                    Masukkan <b>Nomor Undian</b> pemenang. Pisahkan dengan koma atau enter.
+                </p>
+                <div class="input-group">
+                    <label>DAFTAR NO UNDIAN PEMENANG</label>
+                    <textarea id="setting-winner-input" placeholder="Contoh: 001, 105, 088..." rows="5"
+                        style="width: 100%; background: rgba(0,0,0,0.3); color: var(--gold-light); border: 2px solid var(--gold-dark); border-radius: 10px; padding: 15px; font-family: var(--font-head); font-size: 1.2rem;"></textarea>
+                </div>
+                <div id="winner-queue-preview"
+                    style="margin-bottom: 20px; font-family: var(--font-ui); color: var(--gold-light); margin-top:10px;">
+                </div>
+                <button class="action-btn" onclick="app.saveWinnerSetting()">SIMPAN</button>
+                <div id="setting-status" class="status-text"></div>
+            </div>
+            <button class="back-btn" onclick="app.navTo('screen-menu')">KEMBALI KE MENU</button>
+        </section>
+
+        <!-- SPIN SCREEN -->
+        <section id="screen-spin" class="screen hidden">
+            <div class="spin-layout">
+
+                <!-- WHEEL AREA -->
+                <div class="wheel-container">
+                    <div class="pointer">▼</div>
+                    <canvas id="wheel-canvas" width="500" height="500"></canvas>
+                    <button id="spin-btn" class="spin-trigger" onclick="app.startSpin()">SPIN!</button>
+                </div>
+
+                <!-- 3D LEVER CONTROL -->
+                <div class="lever-control-panel">
+                    <div class="lever-label">SPEED POWER</div>
+                    <div class="lever-track">
+                        <div class="lever-fill" id="lever-fill"></div>
+                        <div class="lever-handle" id="lever-handle" onmousedown="app.startDragLever(event)"
+                            ontouchstart="app.startDragLever(event)">
+                            <div class="knob"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RESULT AREA -->
+                <div class="winner-display" id="winner-display">
+                    <h3 class="winner-label">WINNER</h3>
+                    <div class="winner-name" id="win-name">???</div>
+                    <div class="winner-number" id="win-number">000</div>
+                    <button class="reset-btn hidden" id="reset-spin-btn" onclick="app.resetSpin()">SPIN AGAIN</button>
+                </div>
+            </div>
+            <button class="back-btn" onclick="app.navTo('screen-menu')">KEMBALI KE MENU</button>
+        </section>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
